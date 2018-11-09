@@ -53,23 +53,18 @@ export class GoogleAnalystic implements DataTracker {
         };
     }
 
-    includeJS(src, onload, onerror?) {
-
-        const head = document.getElementsByTagName("head")[0] || document.documentElement;
-        const script: any = document.createElement("script");
-
-        head.insertBefore(script, head.firstChild);
+    includeJS(src, onload?, onerror?) {
+        const script = document.createElement("script");
         script.async = true;
-        script.src = src;
 
         let done = false;
-        script.onload = script.onreadystatechange = function(event) {
-            if (!done &&
-                (!this.readyState || this.readyState === "loaded" || this.readyState === "complete")) {
-                done = true;
-                if (onload) {
-                    onload(event);
-                }
+        script.onload = function(event) {
+            if (done) {
+                return;
+            }
+            done = true;
+            if (onload) {
+                onload(event);
             }
         };
         script.onerror = function(event) {
@@ -77,6 +72,12 @@ export class GoogleAnalystic implements DataTracker {
                 onerror(event);
             }
         };
+
+        const head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
+        head.insertBefore(script, head.firstChild);
+
+        script.src = src;
+
         return script;
     }
 
@@ -96,49 +97,49 @@ export class GoogleAnalystic implements DataTracker {
             // "value": eventInfo["value"],
         }
         window['gtag']('event', eventName, info);
-    };
+    }
 
     pageview() {
-        window['gtag']('event', "pageview");
+        this.emit("pageview");
     }
 
     login(channel) {
-        window['gtag']('event', 'login', { method: channel });
+        this.emit('login', { method: channel });
     }
 
     signUp(channel) {
-        window['gtag']('event', 'sign_up', { method: channel });
+        this.emit('sign_up', { method: channel });
     }
 
     exception(message, fatal) {
         fatal = !!fatal;
-        window['gtag']('event', 'exception', {
+        this.emit('exception', {
             'description': message,
             'fatal': false // set to true if the exception is fatal
         });
     }
 
     adLoaded() {
-        window['gtag']('event', "adLoaded");
+        this.emit("adLoaded");
     }
 
     adError() {
-        window['gtag']('event', "adError");
+        this.emit("adError");
     }
 
     adPlay() {
-        window['gtag']('event', "adPlay");
+        this.emit("adPlay");
     }
 
     adSkipped() {
-        window['gtag']('event', "adSkipped");
+        this.emit("adSkipped");
     }
 
     adComplete() {
-        window['gtag']('event', "adComplete");
+        this.emit("adComplete");
     }
 
     adClicked() {
-        window['gtag']('event', "adClicked");
+        this.emit("adClicked");
     }
 }
