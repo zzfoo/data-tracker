@@ -25,7 +25,6 @@ window.addEventListener('error', function(event) {
     dataTrackerManager.exception(desc, false);
 })
 
-
 const dataTracker = new GoogleAnalystic(trackingId, config);
 const dataTrackerManager = new DataTrackerManager(dataTracker);
 dataTrackerManager.init(function(err) {

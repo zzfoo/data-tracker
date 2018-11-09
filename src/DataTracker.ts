@@ -33,8 +33,12 @@ export class BaseDataTrackerManager {
         this.dataTracker.exception(message, fatal);
     }
 
-    adPlay() {
-        this.dataTracker.adPlay();
+    adLoaded() {
+        this.dataTracker.adLoaded();
+    }
+
+    adError() {
+        this.dataTracker.adError();
     }
 
     adPlay() {
@@ -66,4 +70,16 @@ export interface DataTracker {
     signUp(channel?)
 
     exception(message?: string, fatal?: boolean)
+
+    adLoaded()
+
+    adError()
+
+    adPlay()
+
+    adSkipped()
+
+    adComplete()
+
+    adClicked()
 }

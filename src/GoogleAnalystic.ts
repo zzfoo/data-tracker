@@ -57,11 +57,11 @@ export class GoogleAnalystic implements DataTracker {
 
         const head = document.getElementsByTagName("head")[0] || document.documentElement;
         const script: any = document.createElement("script");
-    
+
         head.insertBefore(script, head.firstChild);
         script.async = true;
         script.src = src;
-    
+
         let done = false;
         script.onload = script.onreadystatechange = function(event) {
             if (!done &&
@@ -116,5 +116,29 @@ export class GoogleAnalystic implements DataTracker {
             'description': message,
             'fatal': false // set to true if the exception is fatal
         });
+    }
+
+    adLoaded() {
+        window['gtag']('event', "adLoaded");
+    }
+
+    adError() {
+        window['gtag']('event', "adError");
+    }
+
+    adPlay() {
+        window['gtag']('event', "adPlay");
+    }
+
+    adSkipped() {
+        window['gtag']('event', "adSkipped");
+    }
+
+    adComplete() {
+        window['gtag']('event', "adComplete");
+    }
+
+    adClicked() {
+        window['gtag']('event', "adClicked");
     }
 }
