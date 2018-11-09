@@ -1,6 +1,6 @@
-define(["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+"use strict";
+var DataTracker;
+(function (DataTracker) {
     var GoogleAnalystic = /** @class */ (function () {
         function GoogleAnalystic(trackingId, configData) {
             this.trackingId = trackingId;
@@ -101,5 +101,5 @@ define(["require", "exports"], function (require, exports) {
         };
         return GoogleAnalystic;
     }());
-    exports.GoogleAnalystic = GoogleAnalystic;
-});
+    DataTracker.GoogleAnalystic = GoogleAnalystic;
+})(DataTracker || (DataTracker = {}));

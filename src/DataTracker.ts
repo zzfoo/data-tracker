@@ -1,93 +1,96 @@
 'use strict';
 
-export class BaseDataTrackerManager {
-    disabled: boolean = false;
-    constructor (public dataTracker: DataTracker) {
+namespace DataTracker {
+    export class BaseDataTrackerManager {
+        disabled: boolean = false;
+        constructor (public tracker: Tracker) {
 
-    }
-    init (callback) {
-        if (this.disabled) {
-            callback && callback();
-            return;
         }
-        this.dataTracker.init(callback);
-    }
-
-    emit (eventName, eventInfo?) {
-        if (this.disabled) {
-            return false;
+        init (callback) {
+            if (this.disabled) {
+                callback && callback();
+                return;
+            }
+            this.tracker.init(callback);
         }
-        this.dataTracker.emit(eventName, eventInfo);
-        this.onEmit(eventName, eventInfo);
+
+        emit (eventName, eventInfo?) {
+            if (this.disabled) {
+                return false;
+            }
+            this.tracker.emit(eventName, eventInfo);
+            this.onEmit(eventName, eventInfo);
+        }
+
+        onEmit (eventName, eventInfo?) {
+
+        }
+
+        pageview() {
+            this.tracker.pageview();
+        }
+
+        login(channel?) {
+            this.tracker.login(channel);
+        }
+
+        signUp(channel?) {
+            this.tracker.signUp(channel);
+        }
+
+        exception(message?: string, fatal?: boolean) {
+            this.tracker.exception(message, fatal);
+        }
+
+        adLoaded() {
+            this.tracker.adLoaded();
+        }
+
+        adError() {
+            this.tracker.adError();
+        }
+
+        adPlay() {
+            this.tracker.adPlay();
+        }
+
+        adSkipped() {
+            this.tracker.adSkipped();
+        }
+
+        adComplete() {
+            this.tracker.adComplete();
+        }
+
+        adClicked() {
+            this.tracker.adClicked();
+        }
     }
 
-    onEmit (eventName, eventInfo?) {
+    export interface Tracker {
+        init (callback)
 
-    }
+        emit (eventName, eventInfo?)
 
-    pageview() {
-        this.dataTracker.pageview();
-    }
+        pageview()
 
-    login(channel?) {
-        this.dataTracker.login(channel);
-    }
+        login(channel?)
 
-    signUp(channel?) {
-        this.dataTracker.signUp(channel);
-    }
+        signUp(channel?)
 
-    exception(message?: string, fatal?: boolean) {
-        this.dataTracker.exception(message, fatal);
-    }
+        exception(message?: string, fatal?: boolean)
 
-    adLoaded() {
-        this.dataTracker.adLoaded();
-    }
+        adLoaded()
 
-    adError() {
-        this.dataTracker.adError();
-    }
+        adError()
 
-    adPlay() {
-        this.dataTracker.adPlay();
-    }
+        adPlay()
 
-    adSkipped() {
-        this.dataTracker.adSkipped();
-    }
+        adSkipped()
 
-    adComplete() {
-        this.dataTracker.adComplete();
-    }
+        adComplete()
 
-    adClicked() {
-        this.dataTracker.adClicked();
+        adClicked()
     }
 }
 
-export interface DataTracker {
-    init (callback)
-
-    emit (eventName, eventInfo?)
-
-    pageview()
-
-    login(channel?)
-
-    signUp(channel?)
-
-    exception(message?: string, fatal?: boolean)
-
-    adLoaded()
-
-    adError()
-
-    adPlay()
-
-    adSkipped()
-
-    adComplete()
-
-    adClicked()
-}
