@@ -1,14 +1,22 @@
 'use strict';
 
 export class BaseDataTrackerManager {
+    disabled: boolean = false;
     constructor (public dataTracker: DataTracker) {
 
     }
     init (callback) {
+        if (this.disabled) {
+            callback && callback();
+            return;
+        }
         this.dataTracker.init(callback);
     }
 
     emit (eventName, eventInfo?) {
+        if (this.disabled) {
+            return false;
+        }
         this.dataTracker.emit(eventName, eventInfo);
         this.onEmit(eventName, eventInfo);
     }

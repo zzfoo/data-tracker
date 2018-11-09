@@ -2,15 +2,9 @@ import { DataTracker } from "./DataTracker";
 
 export class GoogleAnalystic implements DataTracker {
     inited: boolean = false;
-    disabled: boolean = false;
     constructor (public trackingId, public configData) {
     }
     init(callback) {
-        if (this.disabled) {
-            callback && callback();
-            return;
-        }
-
         const Me = this;
         var jsSrc = "https://www.googletagmanager.com/gtag/js?id=";
         jsSrc += this.trackingId;
@@ -61,10 +55,6 @@ export class GoogleAnalystic implements DataTracker {
     }
 
     emit(eventName, eventInfo?) {
-        if (this.disabled) {
-            return false;
-        }
-
         eventInfo = eventInfo || {};
         var info = {};
         for (var k in eventInfo) {
