@@ -1,15 +1,10 @@
 import { GoogleAnalystic } from "../src/GoogleAnalystic";
 import { BaseDataTrackerManager } from "../src/DataTracker";
 
-enum CustomDataTrackerEvent {
-    Pause = 'pause',
-}
-
 class DataTrackerManager extends BaseDataTrackerManager {
 
     pause() {
-        this.dataTracker.emit(CustomDataTrackerEvent.Pause, {
-            
+        this.dataTracker.emit('pause', {
         })
     }
 
@@ -23,6 +18,14 @@ const config = {
     }
 };
 
+window.addEventListener('error', function(event) {
+    const { filename, lineno, colno, message } = event;
+    // e.g., main.js(120行60列): name is undefined.
+    const desc = `${filename}(${lineno}行${colno}列): ${ message }`;
+    dataTrackerManager.exception(desc, false);
+})
+
+
 const dataTracker = new GoogleAnalystic(trackingId, config);
 const dataTrackerManager = new DataTrackerManager(dataTracker);
 dataTrackerManager.init(function(err) {
@@ -30,7 +33,6 @@ dataTrackerManager.init(function(err) {
         console.log('init error: ', err);
         return;
     }
-
     console.log('init succeed!');
 });
 export default dataTrackerManager;

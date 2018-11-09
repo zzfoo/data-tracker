@@ -110,12 +110,11 @@ export class GoogleAnalystic implements DataTracker {
         window['gtag']('event', 'sign_up', { method: channel });
     }
 
-    exception(message) {
+    exception(message, fatal) {
+        fatal = !!fatal;
         window['gtag']('event', 'exception', {
             'description': message,
             'fatal': false // set to true if the exception is fatal
         });
     }
-
-    
 }

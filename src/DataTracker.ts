@@ -8,8 +8,13 @@ export class BaseDataTrackerManager {
         this.dataTracker.init(callback);
     }
 
-    emit (eventName, eventInfo) {
+    emit (eventName, eventInfo?) {
         this.dataTracker.emit(eventName, eventInfo);
+        this.onEmit(eventName, eventInfo);
+    }
+
+    onEmit (eventName, eventInfo?) {
+
     }
 
     pageview() {
@@ -24,8 +29,28 @@ export class BaseDataTrackerManager {
         this.dataTracker.signUp(channel);
     }
 
-    exception(message?) {
-        this.dataTracker.exception(message);
+    exception(message?: string, fatal?: boolean) {
+        this.dataTracker.exception(message, fatal);
+    }
+
+    adPlay() {
+        this.dataTracker.adPlay();
+    }
+
+    adPlay() {
+        this.dataTracker.adPlay();
+    }
+
+    adSkipped() {
+        this.dataTracker.adSkipped();
+    }
+
+    adComplete() {
+        this.dataTracker.adComplete();
+    }
+
+    adClicked() {
+        this.dataTracker.adClicked();
     }
 }
 
@@ -40,5 +65,5 @@ export interface DataTracker {
 
     signUp(channel?)
 
-    exception(message?)
+    exception(message?: string, fatal?: boolean)
 }
