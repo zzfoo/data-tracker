@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
-      "module": "commonjs",
-      "lib": [ "dom", "es5" ],
+      "module": "amd",
       "target": "es5",
-      "allowJs": true,
+      "strict": true,
+      "noImplicitAny": false,
     },
     "include": [
       "src/**/*"
