@@ -3,11 +3,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var BaseDataTrackerManager = /** @class */ (function () {
     function BaseDataTrackerManager(dataTracker) {
         this.dataTracker = dataTracker;
+        this.disabled = false;
     }
     BaseDataTrackerManager.prototype.init = function (callback) {
+        if (this.disabled) {
+            callback && callback();
+            return;
+        }
         this.dataTracker.init(callback);
     };
     BaseDataTrackerManager.prototype.emit = function (eventName, eventInfo) {
+        if (this.disabled) {
+            return false;
+        }
         this.dataTracker.emit(eventName, eventInfo);
         this.onEmit(eventName, eventInfo);
     };

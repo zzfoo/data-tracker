@@ -5,13 +5,8 @@ var GoogleAnalystic = /** @class */ (function () {
         this.trackingId = trackingId;
         this.configData = configData;
         this.inited = false;
-        this.disabled = false;
     }
     GoogleAnalystic.prototype.init = function (callback) {
-        if (this.disabled) {
-            callback && callback();
-            return;
-        }
         var Me = this;
         var jsSrc = "https://www.googletagmanager.com/gtag/js?id=";
         jsSrc += this.trackingId;
@@ -50,9 +45,6 @@ var GoogleAnalystic = /** @class */ (function () {
         return script;
     };
     GoogleAnalystic.prototype.emit = function (eventName, eventInfo) {
-        if (this.disabled) {
-            return false;
-        }
         eventInfo = eventInfo || {};
         var info = {};
         for (var k in eventInfo) {
