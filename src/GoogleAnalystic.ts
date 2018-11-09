@@ -2,15 +2,18 @@ import { DataTracker } from "./DataTracker";
 
 export class GoogleAnalystic implements DataTracker {
     inited: boolean = false;
+    disabled: boolean = false;
     constructor (public trackingId, public configData) {
     }
     init(callback) {
+        if (this.disabled) {
+            callback && callback();
+            return;
+        }
+
         const Me = this;
-
-        var jsSrc = /* <str> */ "https://www.googletagmanager.com/gtag/js?id=" /* </str> */;
-
+        var jsSrc = "https://www.googletagmanager.com/gtag/js?id=";
         jsSrc += this.trackingId;
-
         this.includeJS(jsSrc, function () {
 
             Me.inited = true;
@@ -27,30 +30,6 @@ export class GoogleAnalystic implements DataTracker {
         window['gtag']('js', new Date());
 
         window['gtag']('config', this.trackingId, this.configData);
-
-        // gtag('event', <action>, {
-        //   'event_category': <category>,
-        //   'event_label': <label>,
-        //   'value': <value>
-        // });
-
-        Me.emit = function (eventName, eventInfo) {
-            eventInfo = eventInfo || {};
-            var info = {};
-            for (var k in eventInfo) {
-                if (k === "category") {
-                    info["event_category"] = eventInfo[k];
-                } else if (k === "label") {
-                    info["event_label"] = eventInfo[k];
-                } else if (k === "tag") {
-                    info["event_label"] = eventInfo[k];
-                } else {
-                    info[k] = eventInfo[k];
-                }
-                // "value": eventInfo["value"],
-            }
-            window['gtag']('event', eventName, info);
-        };
     }
 
     includeJS(src, onload?, onerror?) {
@@ -82,6 +61,10 @@ export class GoogleAnalystic implements DataTracker {
     }
 
     emit(eventName, eventInfo?) {
+        if (this.disabled) {
+            return false;
+        }
+
         eventInfo = eventInfo || {};
         var info = {};
         for (var k in eventInfo) {

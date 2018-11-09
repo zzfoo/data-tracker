@@ -5,10 +5,15 @@ var GoogleAnalystic = /** @class */ (function () {
         this.trackingId = trackingId;
         this.configData = configData;
         this.inited = false;
+        this.disabled = false;
     }
     GoogleAnalystic.prototype.init = function (callback) {
+        if (this.disabled) {
+            callback && callback();
+            return;
+        }
         var Me = this;
-        var jsSrc = /* <str> */ "https://www.googletagmanager.com/gtag/js?id=" /* </str> */;
+        var jsSrc = "https://www.googletagmanager.com/gtag/js?id=";
         jsSrc += this.trackingId;
         this.includeJS(jsSrc, function () {
             Me.inited = true;
@@ -20,31 +25,6 @@ var GoogleAnalystic = /** @class */ (function () {
         };
         window['gtag']('js', new Date());
         window['gtag']('config', this.trackingId, this.configData);
-        // gtag('event', <action>, {
-        //   'event_category': <category>,
-        //   'event_label': <label>,
-        //   'value': <value>
-        // });
-        Me.emit = function (eventName, eventInfo) {
-            eventInfo = eventInfo || {};
-            var info = {};
-            for (var k in eventInfo) {
-                if (k === "category") {
-                    info["event_category"] = eventInfo[k];
-                }
-                else if (k === "label") {
-                    info["event_label"] = eventInfo[k];
-                }
-                else if (k === "tag") {
-                    info["event_label"] = eventInfo[k];
-                }
-                else {
-                    info[k] = eventInfo[k];
-                }
-                // "value": eventInfo["value"],
-            }
-            window['gtag']('event', eventName, info);
-        };
     };
     GoogleAnalystic.prototype.includeJS = function (src, onload, onerror) {
         var script = document.createElement("script");
@@ -70,6 +50,9 @@ var GoogleAnalystic = /** @class */ (function () {
         return script;
     };
     GoogleAnalystic.prototype.emit = function (eventName, eventInfo) {
+        if (this.disabled) {
+            return false;
+        }
         eventInfo = eventInfo || {};
         var info = {};
         for (var k in eventInfo) {
