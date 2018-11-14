@@ -1,7 +1,6 @@
 {
   "name": "data-tracker",
   "version": "1.0.0",
-  "description": "",
   "main": "gulpfile.js",
   "directories": {
     "example": "example"
@@ -25,5 +24,6 @@
   "bugs": {
     "url": "https://github.com/zzfoo/data-tracker/issues"
   },
-  "homepage": "https://github.com/zzfoo/data-tracker#readme"
+  "homepage": "https://github.com/zzfoo/data-tracker#readme",
+  "description": ""
 }

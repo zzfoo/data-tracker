@@ -6,14 +6,19 @@ var DataTracker;
             this.trackingId = trackingId;
             this.configData = configData;
             this.inited = false;
+            this.disabled = false;
         }
         GoogleAnalystic.prototype.init = function (callback) {
+            if (this.disabled) {
+                callback && callback(false);
+                return false;
+            }
             var Me = this;
             var jsSrc = "https://www.googletagmanager.com/gtag/js?id=";
             jsSrc += this.trackingId;
             this.includeJS(jsSrc, function () {
                 Me.inited = true;
-                callback && callback();
+                callback && callback(true);
             });
             window['dataLayer'] = window['dataLayer'] || [];
             window['gtag'] = function () {
@@ -46,6 +51,9 @@ var DataTracker;
             return script;
         };
         GoogleAnalystic.prototype.emit = function (eventName, eventInfo) {
+            if (this.disabled) {
+                return false;
+            }
             eventInfo = eventInfo || {};
             var info = {};
             for (var k in eventInfo) {
@@ -63,7 +71,7 @@ var DataTracker;
                 }
                 // "value": eventInfo["value"],
             }
-            window['gtag']('event', eventName, info);
+            return window['gtag']('event', eventName, info);
         };
         GoogleAnalystic.prototype.pageview = function () {
             this.emit("pageview");

@@ -1,9 +1,14 @@
 namespace DataTracker {
     export class GoogleAnalystic implements DataTracker.Tracker {
         inited: boolean = false;
+        disabled: boolean = false;
         constructor (public trackingId, public configData) {
         }
         init(callback) {
+            if (this.disabled) {
+                callback && callback(false);
+                return false;
+            }
             const Me = this;
             var jsSrc = "https://www.googletagmanager.com/gtag/js?id=";
             jsSrc += this.trackingId;
@@ -11,7 +16,7 @@ namespace DataTracker {
 
                 Me.inited = true;
 
-                callback && callback();
+                callback && callback(true);
             });
 
             window['dataLayer'] = window['dataLayer'] || [];
@@ -54,6 +59,9 @@ namespace DataTracker {
         }
 
         emit(eventName, eventInfo?) {
+            if (this.disabled) {
+                return false;
+            }
             eventInfo = eventInfo || {};
             var info = {};
             for (var k in eventInfo) {
@@ -68,7 +76,7 @@ namespace DataTracker {
                 }
                 // "value": eventInfo["value"],
             }
-            window['gtag']('event', eventName, info);
+            return window['gtag']('event', eventName, info);
         }
 
         pageview() {
