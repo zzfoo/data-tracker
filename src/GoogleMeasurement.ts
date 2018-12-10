@@ -99,14 +99,6 @@ namespace DataTracker {
             });
         }
 
-        login(channel) {
-            this.emit('login', { method: channel });
-        }
-
-        signUp(channel) {
-            this.emit('sign_up', { method: channel });
-        }
-
         exception(message, fatal) {
             let info = {
                 "exd": message,

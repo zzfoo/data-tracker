@@ -111,12 +111,6 @@ var DataTracker;
                 "screen": window.innerWidth + "x" + window.innerHeight
             });
         };
-        GoogleMeasurement.prototype.login = function (channel) {
-            this.emit('login', { method: channel });
-        };
-        GoogleMeasurement.prototype.signUp = function (channel) {
-            this.emit('sign_up', { method: channel });
-        };
         GoogleMeasurement.prototype.exception = function (message, fatal) {
             var info = {
                 "exd": message,
