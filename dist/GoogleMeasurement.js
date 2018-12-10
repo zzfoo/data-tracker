@@ -94,6 +94,14 @@ var DataTracker;
             var method = "POST";
             var url = this.requestUrl;
             var async = true;
+            data.v = this.version;
+            data.tid = this.trackingId;
+            if (this.clientId) {
+                data.cid = this.clientId;
+            }
+            if (this.userId) {
+                data.uid = this.userId;
+            }
             var queryString = "";
             for (var k in data) {
                 queryString += '&' + encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
@@ -108,7 +116,8 @@ var DataTracker;
         };
         GoogleMeasurement.prototype.pageview = function () {
             this.emit("pageview", {
-                "screen": window.innerWidth + "x" + window.innerHeight
+                "screen": window.innerWidth + "x" + window.innerHeight,
+                "sc": "start"
             });
         };
         GoogleMeasurement.prototype.exception = function (message, fatal) {

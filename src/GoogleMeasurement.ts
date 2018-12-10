@@ -78,6 +78,15 @@ namespace DataTracker {
             const url = this.requestUrl;
             const async = true;
 
+            data.v = this.version;
+            data.tid = this.trackingId;
+            if (this.clientId) {
+                data.cid = this.clientId
+            }
+            if (this.userId) {
+                data.uid = this.userId
+            }
+
             let queryString = "";
             for (let k in data) {
                 queryString += '&' + encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
@@ -95,7 +104,8 @@ namespace DataTracker {
 
         pageview() {
             this.emit("pageview", {
-                "screen": window.innerWidth + "x" + window.innerHeight
+                "screen": window.innerWidth + "x" + window.innerHeight,
+                "sc": "start"
             });
         }
 
