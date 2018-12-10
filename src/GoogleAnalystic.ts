@@ -10,7 +10,7 @@ namespace DataTracker {
                 return false;
             }
             const Me = this;
-            var jsSrc = "https://www.googletagmanager.com/gtag/js?id=";
+            let jsSrc = "https://www.googletagmanager.com/gtag/js?id=";
             jsSrc += this.trackingId;
             this.includeJS(jsSrc, function () {
 
@@ -63,18 +63,19 @@ namespace DataTracker {
                 return false;
             }
             eventInfo = eventInfo || {};
-            var info = {};
-            for (var k in eventInfo) {
+            let info = {};
+            for (let k in eventInfo) {
                 if (k === "category") {
                     info["event_category"] = eventInfo[k];
                 } else if (k === "label") {
                     info["event_label"] = eventInfo[k];
                 } else if (k === "tag") {
                     info["event_label"] = eventInfo[k];
+                } else if (k === "value") {
+                    info["value"] = eventInfo[k];
                 } else {
                     info[k] = eventInfo[k];
                 }
-                // "value": eventInfo["value"],
             }
             return window['gtag']('event', eventName, info);
         }
