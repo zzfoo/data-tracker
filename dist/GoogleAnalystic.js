@@ -66,10 +66,12 @@ var DataTracker;
                 else if (k === "tag") {
                     info["event_label"] = eventInfo[k];
                 }
+                else if (k === "value") {
+                    info["value"] = eventInfo[k];
+                }
                 else {
                     info[k] = eventInfo[k];
                 }
-                // "value": eventInfo["value"],
             }
             return window['gtag']('event', eventName, info);
         };
