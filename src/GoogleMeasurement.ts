@@ -2,7 +2,7 @@ namespace DataTracker {
     export class GoogleMeasurement extends DataTracker.GoogleAnalystic {
         inited: boolean = false;
         disabled: boolean = false;
-        requestUrl: string = "http://www.google-analytics.com/collect";
+        requestUrl: string = "https://www.google-analytics.com/collect";
         version: string = "1";
         clientId!: string;
         userId!: string;
@@ -42,50 +42,66 @@ namespace DataTracker {
                 return false;
             }
             eventInfo = eventInfo || {};
-            let info = {
-                "ea": eventName,
+            let data = {
                 "v": this.version,
                 "tid": this.trackingId,
             };
 
+            // type: "pageview"、"screenview"、"event"、"transaction"、"item"、"social"、"exception"、"timing"
+            let type = eventInfo["type"] || eventInfo["t"];
+
+            if (eventName) {
+                data["ea"] = eventName
+                type = "event";
+            }
+            if (type) {
+                data["t"] = type;
+            }
+
             if (this.clientId) {
-                info["cid"] = this.clientId
+                data["cid"] = this.clientId
             }
             if (this.userId) {
-                info["uid"] = this.userId
+                data["uid"] = this.userId
             }
 
             for (let k in eventInfo) {
-                if (k === "clientId") {
-                    info["cid"] = eventInfo[k];
-                } else if (k === "userId") {
-                    info["uid"] = eventInfo[k];
+                if (k === "clientId") { // clientId deviceId uuid duid
+                    data["cid"] = eventInfo[k];
+                } else if (k === "userId") { // userid openid
+                    data["uid"] = eventInfo[k];
 
+                } else if (k === "type") {
+                    // don't set again: data["t"] = eventInfo[k];
+
+                    // event
                 } else if (k === "category") {
-                    info["ec"] = eventInfo[k];
+                    data["ec"] = eventInfo[k];
                 } else if (k === "label") {
-                    info["el"] = eventInfo[k];
+                    data["el"] = eventInfo[k];
                 } else if (k === "tag") {
-                    info["el"] = eventInfo[k];
+                    data["el"] = eventInfo[k];
                 } else if (k === "value") {
-                    info["ev"] = eventInfo[k];
+                    data["ev"] = eventInfo[k];
 
+                    // other params
                 } else if (k === "source") {
-                    info["ds"] = eventInfo[k]; // web app
+                    data["ds"] = eventInfo[k]; // web app
                 } else if (k === "referer") {
-                    info["dr"] = eventInfo[k]; // http://foobar.com
+                    data["dr"] = eventInfo[k]; // http://foobar.com
                 } else if (k === "language") {
-                    info["ul"] = eventInfo[k]; // en-us zh-cn
+                    data["ul"] = eventInfo[k]; // en-us zh-cn
                 } else if (k === "screen") { // 640x960
-                    info["sr"] = eventInfo[k];
+                    data["sr"] = eventInfo[k];
                 } else if (k === "viewport") { // 600x800
-                    info["vp"] = eventInfo[k];
+                    data["vp"] = eventInfo[k];
+
                 } else {
-                    info[k] = eventInfo[k];
+                    data[k] = eventInfo[k];
                 }
             }
 
-            this.post(info);
+            this.post(data);
 
             return true;
         }
@@ -104,26 +120,51 @@ namespace DataTracker {
             const xhr = new XMLHttpRequest();
             xhr.open(method, url, async);
             xhr.withCredentials = true;
+            // xhr.setRequestHeader("Accept", "application/json, text/javascript, */*; q=0.01");
             xhr.setRequestHeader("Accept", "application/json, text/javascript, */*");
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
 
             xhr.send(queryString);
         }
 
+        // “pageview”、“screenview”、“event”、“transaction”、“item”、“social”、“exception”、“timing”
+        timing(info) {
+            let data = {
+                "type": "timing"
+            };
+            if (info['category']) {
+                data["utc"] = info['category'];
+            }
+            if (info['label']) {
+                data["utl"] = info['label'];
+            }
+            if (info['name']) {
+                data["utv"] = info['name'];
+            }
+            if (info['time']) {
+                data["utt"] = info['time'];
+            }
+            this.emit(null, data);
+        }
+
         pageview() {
-            this.emit("pageview", {
+            let data = {
+                "type": "pageview",
                 "screen": window.innerWidth + "x" + window.innerHeight,
                 "sc": "start"
-            });
+            };
+
+            this.emit(null, data);
         }
 
         exception(message, fatal) {
-            let info = {
+            let data = {
+                "type": "exception",
                 "exd": message,
                 "exf": fatal ? 1 : 0,
             };
 
-            this.post(info);
+            this.emit(null, data);
         }
     }
 }

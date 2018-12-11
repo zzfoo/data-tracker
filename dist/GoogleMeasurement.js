@@ -22,7 +22,7 @@ var DataTracker;
             _this.configData = configData;
             _this.inited = false;
             _this.disabled = false;
-            _this.requestUrl = "http://www.google-analytics.com/collect";
+            _this.requestUrl = "https://www.google-analytics.com/collect";
             _this.version = "1";
             _this.dimensionMap = {};
             _this.metricMap = {};
@@ -55,56 +55,69 @@ var DataTracker;
                 return false;
             }
             eventInfo = eventInfo || {};
-            var info = {
-                "ea": eventName,
+            var data = {
                 "v": this.version,
                 "tid": this.trackingId,
             };
+            // type: "pageview"、"screenview"、"event"、"transaction"、"item"、"social"、"exception"、"timing"
+            var type = eventInfo["type"] || eventInfo["t"];
+            if (eventName) {
+                data["ea"] = eventName;
+                type = "event";
+            }
+            if (type) {
+                data["t"] = type;
+            }
             if (this.clientId) {
-                info["cid"] = this.clientId;
+                data["cid"] = this.clientId;
             }
             if (this.userId) {
-                info["uid"] = this.userId;
+                data["uid"] = this.userId;
             }
             for (var k in eventInfo) {
-                if (k === "clientId") {
-                    info["cid"] = eventInfo[k];
+                if (k === "clientId") { // clientId deviceId uuid duid
+                    data["cid"] = eventInfo[k];
                 }
-                else if (k === "userId") {
-                    info["uid"] = eventInfo[k];
+                else if (k === "userId") { // userid openid
+                    data["uid"] = eventInfo[k];
+                }
+                else if (k === "type") {
+                    // don't set again: data["t"] = eventInfo[k];
+                    // event
                 }
                 else if (k === "category") {
-                    info["ec"] = eventInfo[k];
+                    data["ec"] = eventInfo[k];
                 }
                 else if (k === "label") {
-                    info["el"] = eventInfo[k];
+                    data["el"] = eventInfo[k];
                 }
                 else if (k === "tag") {
-                    info["el"] = eventInfo[k];
+                    data["el"] = eventInfo[k];
                 }
                 else if (k === "value") {
-                    info["ev"] = eventInfo[k];
+                    data["ev"] = eventInfo[k];
+                    // other params
                 }
                 else if (k === "source") {
-                    info["ds"] = eventInfo[k]; // web app
+                    data["ds"] = eventInfo[k]; // web app
                 }
                 else if (k === "referer") {
-                    info["dr"] = eventInfo[k]; // http://foobar.com
+                    data["dr"] = eventInfo[k]; // http://foobar.com
                 }
                 else if (k === "language") {
-                    info["ul"] = eventInfo[k]; // en-us zh-cn
+                    data["ul"] = eventInfo[k]; // en-us zh-cn
                 }
                 else if (k === "screen") { // 640x960
-                    info["sr"] = eventInfo[k];
+                    data["sr"] = eventInfo[k];
                 }
                 else if (k === "viewport") { // 600x800
-                    info["vp"] = eventInfo[k];
+                    data["vp"] = eventInfo[k];
                 }
                 else {
-                    info[k] = eventInfo[k];
+                    data[k] = eventInfo[k];
                 }
             }
-            this.post(info);
+            this.post(data);
             return true;
         };
         GoogleMeasurement.prototype.post = function (data) {
@@ -119,22 +132,45 @@ var DataTracker;
             var xhr = new XMLHttpRequest();
             xhr.open(method, url, async);
             xhr.withCredentials = true;
+            // xhr.setRequestHeader("Accept", "application/json, text/javascript, */*; q=0.01");
             xhr.setRequestHeader("Accept", "application/json, text/javascript, */*");
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
             xhr.send(queryString);
         };
+        // “pageview”、“screenview”、“event”、“transaction”、“item”、“social”、“exception”、“timing”
+        GoogleMeasurement.prototype.timing = function (info) {
+            var data = {
+                "type": "timing"
+            };
+            if (info['category']) {
+                data["utc"] = info['category'];
+            }
+            if (info['label']) {
+                data["utl"] = info['label'];
+            }
+            if (info['name']) {
+                data["utv"] = info['name'];
+            }
+            if (info['time']) {
+                data["utt"] = info['time'];
+            }
+            this.emit(null, data);
+        };
         GoogleMeasurement.prototype.pageview = function () {
-            this.emit("pageview", {
+            var data = {
+                "type": "pageview",
                 "screen": window.innerWidth + "x" + window.innerHeight,
                 "sc": "start"
-            });
+            };
+            this.emit(null, data);
         };
         GoogleMeasurement.prototype.exception = function (message, fatal) {
-            var info = {
+            var data = {
+                "type": "exception",
                 "exd": message,
                 "exf": fatal ? 1 : 0,
             };
-            this.post(info);
+            this.emit(null, data);
         };
         return GoogleMeasurement;
     }(DataTracker.GoogleAnalystic));
