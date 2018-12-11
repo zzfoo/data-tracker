@@ -137,7 +137,6 @@ var DataTracker;
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
             xhr.send(queryString);
         };
-        // “pageview”、“screenview”、“event”、“transaction”、“item”、“social”、“exception”、“timing”
         GoogleMeasurement.prototype.timing = function (info) {
             var data = {
                 "type": "timing"

@@ -127,7 +127,6 @@ namespace DataTracker {
             xhr.send(queryString);
         }
 
-        // “pageview”、“screenview”、“event”、“transaction”、“item”、“social”、“exception”、“timing”
         timing(info) {
             let data = {
                 "type": "timing"
