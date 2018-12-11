@@ -56,10 +56,24 @@ var DataTracker;
             }
             eventInfo = eventInfo || {};
             var info = {
-                "ea": eventName
+                "ea": eventName,
+                "v": this.version,
+                "tid": this.trackingId,
             };
+            if (this.clientId) {
+                info["cid"] = this.clientId;
+            }
+            if (this.userId) {
+                info["uid"] = this.userId;
+            }
             for (var k in eventInfo) {
-                if (k === "category") {
+                if (k === "clientId") {
+                    info["cid"] = eventInfo[k];
+                }
+                else if (k === "userId") {
+                    info["uid"] = eventInfo[k];
+                }
+                else if (k === "category") {
                     info["ec"] = eventInfo[k];
                 }
                 else if (k === "label") {
@@ -70,6 +84,9 @@ var DataTracker;
                 }
                 else if (k === "value") {
                     info["ev"] = eventInfo[k];
+                }
+                else if (k === "source") {
+                    info["ds"] = eventInfo[k]; // web app
                 }
                 else if (k === "referer") {
                     info["dr"] = eventInfo[k]; // http://foobar.com
@@ -94,14 +111,6 @@ var DataTracker;
             var method = "POST";
             var url = this.requestUrl;
             var async = true;
-            data.v = this.version;
-            data.tid = this.trackingId;
-            if (this.clientId) {
-                data.cid = this.clientId;
-            }
-            if (this.userId) {
-                data.uid = this.userId;
-            }
             var queryString = "";
             for (var k in data) {
                 queryString += '&' + encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);

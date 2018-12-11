@@ -42,11 +42,26 @@ namespace DataTracker {
                 return false;
             }
             eventInfo = eventInfo || {};
-            var info = {
-                "ea": eventName
+            let info = {
+                "ea": eventName,
+                "v": this.version,
+                "tid": this.trackingId,
             };
+
+            if (this.clientId) {
+                info["cid"] = this.clientId
+            }
+            if (this.userId) {
+                info["uid"] = this.userId
+            }
+
             for (let k in eventInfo) {
-                if (k === "category") {
+                if (k === "clientId") {
+                    info["cid"] = eventInfo[k];
+                } else if (k === "userId") {
+                    info["uid"] = eventInfo[k];
+
+                } else if (k === "category") {
                     info["ec"] = eventInfo[k];
                 } else if (k === "label") {
                     info["el"] = eventInfo[k];
@@ -55,6 +70,8 @@ namespace DataTracker {
                 } else if (k === "value") {
                     info["ev"] = eventInfo[k];
 
+                } else if (k === "source") {
+                    info["ds"] = eventInfo[k]; // web app
                 } else if (k === "referer") {
                     info["dr"] = eventInfo[k]; // http://foobar.com
                 } else if (k === "language") {
@@ -77,15 +94,6 @@ namespace DataTracker {
             const method = "POST";
             const url = this.requestUrl;
             const async = true;
-
-            data.v = this.version;
-            data.tid = this.trackingId;
-            if (this.clientId) {
-                data.cid = this.clientId
-            }
-            if (this.userId) {
-                data.uid = this.userId
-            }
 
             let queryString = "";
             for (let k in data) {
