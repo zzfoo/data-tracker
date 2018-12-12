@@ -81,15 +81,15 @@ namespace DataTracker {
         }
 
         pageview() {
-            this.emit("pageview");
+            this.emit('pageview');
         }
 
         login(channel) {
-            this.emit('login', { method: channel });
+            this.emit('login', { 'method': channel });
         }
 
         signUp(channel) {
-            this.emit('sign_up', { method: channel });
+            this.emit('sign_up', { 'method': channel });
         }
 
         exception(message, fatal) {

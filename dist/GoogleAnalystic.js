@@ -76,13 +76,13 @@ var DataTracker;
             return window['gtag']('event', eventName, info);
         };
         GoogleAnalystic.prototype.pageview = function () {
-            this.emit("pageview");
+            this.emit('pageview');
         };
         GoogleAnalystic.prototype.login = function (channel) {
-            this.emit('login', { method: channel });
+            this.emit('login', { 'method': channel });
         };
         GoogleAnalystic.prototype.signUp = function (channel) {
-            this.emit('sign_up', { method: channel });
+            this.emit('sign_up', { 'method': channel });
         };
         GoogleAnalystic.prototype.exception = function (message, fatal) {
             fatal = !!fatal;
