@@ -1,7 +1,5 @@
 .DS_Store
-gulpfile.js
+_backup
 example
-.gitignore
-tsconfig.json
-type-tsconfig.json
 dist
+.gitignore

@@ -1,7 +1,7 @@
 "use strict";
-var BaseDataTrackerManager = require('./build/DataTracker.js').BaseDataTrackerManager;
-var GoogleAnalystic = require('./build/GoogleAnalystic.js').GoogleAnalystic;
-var GoogleMeasurement = require('./build/GoogleMeasurement.js').GoogleMeasurement;
+var BaseDataTrackerManager = require('./src/DataTracker.js');
+var GoogleAnalystic = require('./src/GoogleAnalystic.js');
+var GoogleMeasurement = require('./src/GoogleMeasurement.js');
 module.exports = {
     BaseDataTrackerManager: BaseDataTrackerManager,
     GoogleAnalystic: GoogleAnalystic,
