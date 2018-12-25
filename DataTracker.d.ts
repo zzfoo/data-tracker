@@ -1,4 +1,4 @@
-declare module "DataTracker" {
+declare namespace DataTracker {
     export class BaseDataTrackerManager {
         tracker: Tracker;
         disabled: boolean;
@@ -17,6 +17,7 @@ declare module "DataTracker" {
         adComplete(): false | undefined;
         adClicked(): false | undefined;
     }
+
     export interface Tracker {
         init(callback: any): any;
         emit(eventName: any, eventInfo?: any): any;
@@ -31,9 +32,7 @@ declare module "DataTracker" {
         adComplete(): any;
         adClicked(): any;
     }
-}
-declare module "GoogleAnalystic" {
-    import { Tracker } from "DataTracker";
+
     export class GoogleAnalystic implements Tracker {
         trackingId: any;
         configData: any;
@@ -54,9 +53,7 @@ declare module "GoogleAnalystic" {
         adComplete(): void;
         adClicked(): void;
     }
-}
-declare module "GoogleMeasurement" {
-    import { GoogleAnalystic } from "GoogleAnalystic";
+
     export class GoogleMeasurement extends GoogleAnalystic {
         trackingId: any;
         configData: any;
@@ -79,3 +76,4 @@ declare module "GoogleMeasurement" {
         exception(message: any, fatal: any): void;
     }
 }
+

@@ -14,10 +14,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-ts": "tsc",
-    "build-type": "tsc --build type-tsconfig.json",
     "build-all": "browserify ./index.js > ./dist/DataTracker.js -s DataTracker && uglifyjs -c -m -o ./dist/DataTracker.min.js -- ./dist/DataTracker.js",
     "build-window": "browserify ./index-window.js > ./dist/DataTracker-window.js -s DataTracker && uglifyjs -c -m -o ./dist/DataTracker-window.min.js -- ./dist/DataTracker-window.js",
-    "build": "npm run build-ts && npm run build-type && npm run build-all && npm run build-window"
+    "build": "npm run build-ts && npm run build-all && npm run build-window"
   },
   "repository": {
     "type": "git",

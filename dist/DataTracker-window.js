@@ -382,16 +382,14 @@ var GoogleMeasurement = /** @class */ (function (_super) {
 exports.GoogleMeasurement = GoogleMeasurement;
 
 },{"./GoogleAnalystic":2}],4:[function(require,module,exports){
-var DataTracker = require('./index.js');
-window['DataTracker'] = DataTracker;
-},{"./index.js":5}],5:[function(require,module,exports){
-var BaseDataTrackerManager = require('./build/DataTracker').BaseDataTrackerManager;
-var GoogleAnalystic = require('./build/GoogleAnalystic').GoogleAnalystic;
-var GoogleMeasurement = require('./build/GoogleMeasurement').GoogleMeasurement;
-module.exports = {
+"use strict";
+var BaseDataTrackerManager = require('./build/DataTracker.js').BaseDataTrackerManager;
+var GoogleAnalystic = require('./build/GoogleAnalystic.js').GoogleAnalystic;
+var GoogleMeasurement = require('./build/GoogleMeasurement.js').GoogleMeasurement;
+window['DataTracker'] = module.exports = {
     BaseDataTrackerManager: BaseDataTrackerManager,
     GoogleAnalystic: GoogleAnalystic,
     GoogleMeasurement: GoogleMeasurement,
 };
-},{"./build/DataTracker":1,"./build/GoogleAnalystic":2,"./build/GoogleMeasurement":3}]},{},[4])(4)
+},{"./build/DataTracker.js":1,"./build/GoogleAnalystic.js":2,"./build/GoogleMeasurement.js":3}]},{},[4])(4)
 });

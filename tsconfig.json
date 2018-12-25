@@ -6,9 +6,10 @@
       "declaration": false,
       "noImplicitAny": false,
       "outDir": "build",
+      "emitDeclarationOnly": false,
     },
     "include": [
-      "src/**/*",
+      "src/**/*"
       // "example/**/*"
     ],
     "exclude": [

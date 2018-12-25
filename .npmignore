@@ -1,9 +1,7 @@
 .DS_Store
 gulpfile.js
 example
-dist
 .gitignore
 tsconfig.json
 type-tsconfig.json
-src
 dist
