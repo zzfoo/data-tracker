@@ -1,10 +1,10 @@
-import { GoogleAnalystic } from "../src/GoogleAnalystic";
-import { BaseDataTrackerManager } from "../src/DataTracker";
+// import { GoogleAnalystic } from "../src/GoogleAnalystic";
+// import { BaseDataTrackerManager } from "../src/DataTracker";
 
-class DataTrackerManager extends BaseDataTrackerManager {
+class DataTrackerManager extends DataTracker.BaseDataTrackerManager {
 
     pause() {
-        this.dataTracker.emit('pause', {
+        this.tracker.emit('pause', {
         })
     }
 
@@ -25,7 +25,7 @@ window.addEventListener('error', function(event) {
     dataTrackerManager.exception(desc, false);
 })
 
-const dataTracker = new GoogleAnalystic(trackingId, config);
+const dataTracker = new DataTracker.GoogleAnalystic(trackingId, config);
 const dataTrackerManager = new DataTrackerManager(dataTracker);
 dataTrackerManager.init(function(err) {
     if (err) {

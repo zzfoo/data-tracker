@@ -1,41 +1,35 @@
-import { Tracker } from "./DataTracker";
-
-export class GoogleAnalystic implements Tracker {
-    inited: boolean = false;
-    disabled: boolean = false;
-    constructor(public trackingId, public configData) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var GoogleAnalystic = /** @class */ (function () {
+    function GoogleAnalystic(trackingId, configData) {
+        this.trackingId = trackingId;
+        this.configData = configData;
+        this.inited = false;
+        this.disabled = false;
     }
-    init(callback) {
+    GoogleAnalystic.prototype.init = function (callback) {
         if (this.disabled) {
             callback && callback(false);
             return false;
         }
-        const Me = this;
-        let jsSrc = "https://www.googletagmanager.com/gtag/js?id=";
+        var Me = this;
+        var jsSrc = "https://www.googletagmanager.com/gtag/js?id=";
         jsSrc += this.trackingId;
         this.includeJS(jsSrc, function () {
-
             Me.inited = true;
-
             callback && callback(true);
         });
-
         window['dataLayer'] = window['dataLayer'] || [];
-
         window['gtag'] = function () {
             window['dataLayer'].push(arguments);
         };
-
         window['gtag']('js', new Date());
-
         window['gtag']('config', this.trackingId, this.configData);
-    }
-
-    includeJS(src, onload?, onerror?) {
-        const script = document.createElement("script");
+    };
+    GoogleAnalystic.prototype.includeJS = function (src, onload, onerror) {
+        var script = document.createElement("script");
         script.async = true;
-
-        let done = false;
+        var done = false;
         script.onload = function (event) {
             if (done) {
                 return;
@@ -50,78 +44,70 @@ export class GoogleAnalystic implements Tracker {
                 onerror(event);
             }
         };
-
-        const head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
+        var head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
         head.insertBefore(script, head.firstChild);
-
         script.src = src;
-
         return script;
-    }
-
-    emit(eventName, eventInfo?) {
+    };
+    GoogleAnalystic.prototype.emit = function (eventName, eventInfo) {
         if (this.disabled) {
             return false;
         }
         eventInfo = eventInfo || {};
-        let info = {};
-        for (let k in eventInfo) {
+        var info = {};
+        for (var k in eventInfo) {
             if (k === "category") {
                 info["event_category"] = eventInfo[k];
-            } else if (k === "label") {
+            }
+            else if (k === "label") {
                 info["event_label"] = eventInfo[k];
-            } else if (k === "tag") {
+            }
+            else if (k === "tag") {
                 info["event_label"] = eventInfo[k];
-            } else if (k === "value") {
+            }
+            else if (k === "value") {
                 info["value"] = eventInfo[k];
-            } else {
+            }
+            else {
                 info[k] = eventInfo[k];
             }
         }
         return window['gtag']('event', eventName, info);
-    }
-
-    pageview() {
+    };
+    GoogleAnalystic.prototype.pageview = function () {
         this.emit('pageview');
-    }
-
-    login(channel) {
+    };
+    GoogleAnalystic.prototype.login = function (channel) {
         this.emit('login', { 'method': channel });
-    }
-
-    signUp(channel) {
+    };
+    GoogleAnalystic.prototype.signUp = function (channel) {
         this.emit('sign_up', { 'method': channel });
-    }
-
-    exception(message, fatal) {
+    };
+    GoogleAnalystic.prototype.exception = function (message, fatal) {
         fatal = !!fatal;
         this.emit('exception', {
             'description': message,
             'fatal': false // set to true if the exception is fatal
         });
-    }
-
-    adLoaded() {
+    };
+    GoogleAnalystic.prototype.adLoaded = function () {
         this.emit("adLoaded");
-    }
-
-    adError() {
+    };
+    GoogleAnalystic.prototype.adError = function () {
         this.emit("adError");
-    }
-
-    adPlay() {
+    };
+    GoogleAnalystic.prototype.adPlay = function () {
         this.emit("adPlay");
-    }
-
-    adSkipped() {
+    };
+    GoogleAnalystic.prototype.adSkipped = function () {
         this.emit("adSkipped");
-    }
-
-    adComplete() {
+    };
+    GoogleAnalystic.prototype.adComplete = function () {
         this.emit("adComplete");
-    }
-
-    adClicked() {
+    };
+    GoogleAnalystic.prototype.adClicked = function () {
         this.emit("adClicked");
-    }
-}
+    };
+    return GoogleAnalystic;
+}());
+exports.GoogleAnalystic = GoogleAnalystic;

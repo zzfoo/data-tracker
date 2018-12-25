@@ -382,6 +382,9 @@ var GoogleMeasurement = /** @class */ (function (_super) {
 exports.GoogleMeasurement = GoogleMeasurement;
 
 },{"./GoogleAnalystic":2}],4:[function(require,module,exports){
+var DataTracker = require('./index.js');
+window['DataTracker'] = DataTracker;
+},{"./index.js":5}],5:[function(require,module,exports){
 var BaseDataTrackerManager = require('./build/DataTracker').BaseDataTrackerManager;
 var GoogleAnalystic = require('./build/GoogleAnalystic').GoogleAnalystic;
 var GoogleMeasurement = require('./build/GoogleMeasurement').GoogleMeasurement;

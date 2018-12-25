@@ -1,124 +1,86 @@
 'use strict';
-
-export class BaseDataTrackerManager {
-    disabled: boolean = false;
-    constructor(public tracker: Tracker) {
-
+Object.defineProperty(exports, "__esModule", { value: true });
+var BaseDataTrackerManager = /** @class */ (function () {
+    function BaseDataTrackerManager(tracker) {
+        this.tracker = tracker;
+        this.disabled = false;
     }
-    init(callback) {
+    BaseDataTrackerManager.prototype.init = function (callback) {
         if (this.disabled) {
             callback && callback(false);
             return false;
         }
         this.tracker.init(callback);
-    }
-
-    emit(eventName, eventInfo?) {
+    };
+    BaseDataTrackerManager.prototype.emit = function (eventName, eventInfo) {
         if (this.disabled) {
             return false;
         }
         this.tracker.emit(eventName, eventInfo);
         this.onEmit(eventName, eventInfo);
-    }
-
-    onEmit(eventName, eventInfo?) {
-
-    }
-
-    pageview() {
+    };
+    BaseDataTrackerManager.prototype.onEmit = function (eventName, eventInfo) {
+    };
+    BaseDataTrackerManager.prototype.pageview = function () {
         if (this.disabled) {
             return false;
         }
         this.tracker.pageview();
-    }
-
-    login(channel?) {
+    };
+    BaseDataTrackerManager.prototype.login = function (channel) {
         if (this.disabled) {
             return false;
         }
         this.tracker.login(channel);
-    }
-
-    signUp(channel?) {
+    };
+    BaseDataTrackerManager.prototype.signUp = function (channel) {
         if (this.disabled) {
             return false;
         }
         this.tracker.signUp(channel);
-    }
-
-    exception(message?: string, fatal?: boolean) {
+    };
+    BaseDataTrackerManager.prototype.exception = function (message, fatal) {
         if (this.disabled) {
             return false;
         }
         this.tracker.exception(message, fatal);
-    }
-
-    adLoaded() {
+    };
+    BaseDataTrackerManager.prototype.adLoaded = function () {
         if (this.disabled) {
             return false;
         }
         this.tracker.adLoaded();
-    }
-
-    adError() {
+    };
+    BaseDataTrackerManager.prototype.adError = function () {
         if (this.disabled) {
             return false;
         }
         this.tracker.adError();
-    }
-
-    adPlay() {
+    };
+    BaseDataTrackerManager.prototype.adPlay = function () {
         if (this.disabled) {
             return false;
         }
         this.tracker.adPlay();
-    }
-
-    adSkipped() {
+    };
+    BaseDataTrackerManager.prototype.adSkipped = function () {
         if (this.disabled) {
             return false;
         }
         this.tracker.adSkipped();
-    }
-
-    adComplete() {
+    };
+    BaseDataTrackerManager.prototype.adComplete = function () {
         if (this.disabled) {
             return false;
         }
         this.tracker.adComplete();
-    }
-
-    adClicked() {
+    };
+    BaseDataTrackerManager.prototype.adClicked = function () {
         if (this.disabled) {
             return false;
         }
         this.tracker.adClicked();
-    }
-}
-
-export interface Tracker {
-    init(callback)
-
-    emit(eventName, eventInfo?)
-
-    pageview()
-
-    login(channel?)
-
-    signUp(channel?)
-
-    exception(message?: string, fatal?: boolean)
-
-    adLoaded()
-
-    adError()
-
-    adPlay()
-
-    adSkipped()
-
-    adComplete()
-
-    adClicked()
-}
-
+    };
+    return BaseDataTrackerManager;
+}());
+exports.BaseDataTrackerManager = BaseDataTrackerManager;

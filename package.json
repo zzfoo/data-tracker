@@ -1,21 +1,23 @@
 {
   "name": "data-tracker",
   "version": "1.0.0",
-  "main": "gulpfile.js",
-  "directories": {
-    "example": "example"
-  },
+  "main": "index.js",
+  "directories": {},
   "dependencies": {},
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-typescript": "^5.0.0",
+    "browserify": "^16.2.3",
     "lodash": "^4.17.11",
     "minimatch": "^3.0.4",
-    "typescript": "^3.2.2"
+    "typescript": "^3.2.2",
+    "uglifyjs": "^2.4.11"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "gulp build"
+    "build-ts": "tsc",
+    "build-type": "tsc --build type-tsconfig.json",
+    "build-all": "browserify ./index.js > ./dist/DataTracker.js -s DataTracker && uglifyjs -c -m -o ./dist/DataTracker.min.js -- ./dist/DataTracker.js",
+    "build-window": "browserify ./index-window.js > ./dist/DataTracker-window.js -s DataTracker && uglifyjs -c -m -o ./dist/DataTracker-window.min.js -- ./dist/DataTracker-window.js",
+    "build": "npm run build-ts && npm run build-type && npm run build-all && npm run build-window"
   },
   "repository": {
     "type": "git",
