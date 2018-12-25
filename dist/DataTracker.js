@@ -176,7 +176,7 @@ var GoogleAnalystic = /** @class */ (function () {
         fatal = !!fatal;
         this.emit('exception', {
             'description': message,
-            'fatal': false // set to true if the exception is fatal
+            'fatal': fatal // set to true if the exception is fatal
         });
     };
     GoogleAnalystic.prototype.adLoaded = function () {
