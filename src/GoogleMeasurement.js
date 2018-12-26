@@ -23,7 +23,9 @@ for (var p in GoogleAnalystic.prototype) {
 }
 GoogleMeasurement.prototype.init = function (callback) {
     if (this.disabled) {
-        callback && callback(false);
+        setTimeout(function() {
+            callback && callback(false);
+        }, 30);
         return false;
     }
     var key;
@@ -38,7 +40,9 @@ GoogleMeasurement.prototype.init = function (callback) {
             this.metricMap[paramName] = cmIndex;
         }
     }
-    callback && callback(null);
+    setTimeout(function() {
+        callback && callback(false);
+    }, 30);
 };
 GoogleMeasurement.prototype.emit = function (eventName, eventInfo) {
     if (this.disabled) {

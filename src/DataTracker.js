@@ -5,7 +5,9 @@ function BaseDataTrackerManager(tracker) {
 }
 BaseDataTrackerManager.prototype.init = function (callback) {
     if (this.disabled) {
-        callback && callback(false);
+        setTimeout(function() {
+            callback && callback(false);
+        }, 30);
         return false;
     }
     this.tracker.init(callback);

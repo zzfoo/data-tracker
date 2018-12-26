@@ -20,7 +20,9 @@ function BaseDataTrackerManager(tracker) {
 }
 BaseDataTrackerManager.prototype.init = function (callback) {
     if (this.disabled) {
-        callback && callback(false);
+        setTimeout(function() {
+            callback && callback(false);
+        }, 30);
         return false;
     }
     this.tracker.init(callback);
@@ -105,7 +107,9 @@ function GoogleAnalystic(trackingId, configData) {
 }
 GoogleAnalystic.prototype.init = function (callback) {
     if (this.disabled) {
-        callback && callback(false);
+        setTimeout(function() {
+            callback && callback(false);
+        }, 30);
         return false;
     }
     var Me = this;
@@ -121,6 +125,9 @@ GoogleAnalystic.prototype.init = function (callback) {
     };
     window['gtag']('js', new Date());
     window['gtag']('config', this.trackingId, this.configData);
+    setTimeout(function() {
+        callback && callback(null);
+    }, 30);
 };
 GoogleAnalystic.prototype.includeJS = function (src, onload, onerror) {
     var script = document.createElement("script");
@@ -232,7 +239,9 @@ for (var p in GoogleAnalystic.prototype) {
 }
 GoogleMeasurement.prototype.init = function (callback) {
     if (this.disabled) {
-        callback && callback(false);
+        setTimeout(function() {
+            callback && callback(false);
+        }, 30);
         return false;
     }
     var key;
@@ -247,7 +256,9 @@ GoogleMeasurement.prototype.init = function (callback) {
             this.metricMap[paramName] = cmIndex;
         }
     }
-    callback && callback(null);
+    setTimeout(function() {
+        callback && callback(false);
+    }, 30);
 };
 GoogleMeasurement.prototype.emit = function (eventName, eventInfo) {
     if (this.disabled) {
