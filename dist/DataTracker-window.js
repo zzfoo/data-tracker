@@ -125,9 +125,6 @@ GoogleAnalystic.prototype.init = function (callback) {
     };
     window['gtag']('js', new Date());
     window['gtag']('config', this.trackingId, this.configData);
-    setTimeout(function() {
-        callback && callback(null);
-    }, 30);
 };
 GoogleAnalystic.prototype.includeJS = function (src, onload, onerror) {
     var script = document.createElement("script");
