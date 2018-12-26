@@ -247,6 +247,7 @@ GoogleMeasurement.prototype.init = function (callback) {
             this.metricMap[paramName] = cmIndex;
         }
     }
+    callback && callback(null);
 };
 GoogleMeasurement.prototype.emit = function (eventName, eventInfo) {
     if (this.disabled) {
