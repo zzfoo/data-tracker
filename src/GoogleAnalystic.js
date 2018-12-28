@@ -8,7 +8,7 @@ function GoogleAnalystic(trackingId, configData) {
 GoogleAnalystic.prototype.init = function (callback) {
     if (this.disabled) {
         setTimeout(function() {
-            callback && callback(false);
+            callback && callback(null, false);
         }, 30);
         return false;
     }
@@ -17,7 +17,7 @@ GoogleAnalystic.prototype.init = function (callback) {
     jsSrc += this.trackingId;
     this.includeJS(jsSrc, function () {
         Me.inited = true;
-        callback && callback(true);
+        callback && callback(null, true);
     });
     window['dataLayer'] = window['dataLayer'] || [];
     window['gtag'] = function () {

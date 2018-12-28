@@ -24,7 +24,7 @@ for (var p in GoogleAnalystic.prototype) {
 GoogleMeasurement.prototype.init = function (callback) {
     if (this.disabled) {
         setTimeout(function() {
-            callback && callback(false);
+            callback && callback(null, false);
         }, 30);
         return false;
     }
@@ -41,7 +41,7 @@ GoogleMeasurement.prototype.init = function (callback) {
         }
     }
     setTimeout(function() {
-        callback && callback(false);
+        callback && callback(null, false);
     }, 30);
 };
 GoogleMeasurement.prototype.emit = function (eventName, eventInfo) {
