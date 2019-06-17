@@ -7,13 +7,83 @@ window['DataTracker'] = DataTracker;
 var BaseDataTrackerManager = require('./src/BaseDataTrackerManager.js');
 var GoogleAnalystic = require('./src/GoogleAnalystic.js');
 var GoogleMeasurement = require('./src/GoogleMeasurement.js');
+var Ald = require('./src/Ald.js');
 module.exports = {
     BaseDataTrackerManager: BaseDataTrackerManager,
     GoogleAnalystic: GoogleAnalystic,
     GoogleMeasurement: GoogleMeasurement,
+    Ald: Ald,
 };
 
-},{"./src/BaseDataTrackerManager.js":3,"./src/GoogleAnalystic.js":4,"./src/GoogleMeasurement.js":5}],3:[function(require,module,exports){
+},{"./src/Ald.js":3,"./src/BaseDataTrackerManager.js":4,"./src/GoogleAnalystic.js":5,"./src/GoogleMeasurement.js":6}],3:[function(require,module,exports){
+"use strict"
+function Ald(configData) {
+  this.platform = configData.platform || window['wx']
+  this.inited = false;
+  this.disabled = false;
+}
+
+Ald.prototype.init = function (callback) {
+  if (this.disabled) {
+    setTimeout(function () {
+      callback && callback(null, false);
+    }, 30);
+    return false;
+  }
+
+  var Me = this
+  setTimeout(function () {
+    Me.inited = true
+    callback && callback(null, true);
+  }, 30);
+}
+
+Ald.prototype.emit = function (eventName, eventInfo) {
+  if (this.diabled) {
+    return false
+  }
+
+  this.platform.aldSendEvent(eventName, eventInfo)
+}
+
+Ald.prototype.pageview = function () {
+  this.emit('pageview');
+};
+Ald.prototype.login = function (channel) {
+  this.emit('login', { 'method': channel });
+};
+Ald.prototype.signUp = function (channel) {
+  this.emit('sign_up', { 'method': channel });
+};
+Ald.prototype.exception = function (message, fatal) {
+  fatal = !!fatal;
+  this.emit('exception', {
+      'description': message,
+      'fatal': fatal // set to true if the exception is fatal
+  });
+};
+Ald.prototype.adLoaded = function () {
+  this.emit("adLoaded");
+};
+Ald.prototype.adError = function () {
+  this.emit("adError");
+};
+Ald.prototype.adPlay = function () {
+  this.emit("adPlay");
+};
+Ald.prototype.adSkipped = function () {
+  this.emit("adSkipped");
+};
+Ald.prototype.adComplete = function () {
+  this.emit("adComplete");
+};
+Ald.prototype.adClicked = function () {
+  this.emit("adClicked");
+};
+
+module.exports = GoogleAnalystic;
+
+},{}],4:[function(require,module,exports){
 'use strict';
 function BaseDataTrackerManager(tracker) {
     this.tracker = tracker;
@@ -98,7 +168,7 @@ BaseDataTrackerManager.prototype.adClicked = function () {
     this.tracker.adClicked();
 };
 module.exports = BaseDataTrackerManager;
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 function GoogleAnalystic(trackingId, configData) {
     this.trackingId = trackingId;
@@ -211,7 +281,7 @@ GoogleAnalystic.prototype.adClicked = function () {
 };
 module.exports = GoogleAnalystic;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 var GoogleAnalystic = require('./GoogleAnalystic.js');
@@ -381,4 +451,4 @@ GoogleMeasurement.prototype.exception = function (message, fatal) {
 };
 module.exports = GoogleMeasurement;
 
-},{"./GoogleAnalystic.js":4}]},{},[1]);
+},{"./GoogleAnalystic.js":5}]},{},[1]);
