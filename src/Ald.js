@@ -63,4 +63,4 @@ Ald.prototype.adClicked = function () {
   this.emit("adClicked");
 };
 
-module.exports = GoogleAnalystic;
+module.exports = Ald;
