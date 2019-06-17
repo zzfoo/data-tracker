@@ -1,10 +1,10 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.DataTracker = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 var DataTracker = require('./index.js');
 window['DataTracker'] = DataTracker;
 },{"./index.js":2}],2:[function(require,module,exports){
 "use strict";
-var BaseDataTrackerManager = require('./src/DataTracker.js');
+var BaseDataTrackerManager = require('./src/BaseDataTrackerManager.js');
 var GoogleAnalystic = require('./src/GoogleAnalystic.js');
 var GoogleMeasurement = require('./src/GoogleMeasurement.js');
 module.exports = {
@@ -12,7 +12,8 @@ module.exports = {
     GoogleAnalystic: GoogleAnalystic,
     GoogleMeasurement: GoogleMeasurement,
 };
-},{"./src/DataTracker.js":3,"./src/GoogleAnalystic.js":4,"./src/GoogleMeasurement.js":5}],3:[function(require,module,exports){
+
+},{"./src/BaseDataTrackerManager.js":3,"./src/GoogleAnalystic.js":4,"./src/GoogleMeasurement.js":5}],3:[function(require,module,exports){
 'use strict';
 function BaseDataTrackerManager(tracker) {
     this.tracker = tracker;
@@ -108,7 +109,7 @@ function GoogleAnalystic(trackingId, configData) {
 GoogleAnalystic.prototype.init = function (callback) {
     if (this.disabled) {
         setTimeout(function() {
-            callback && callback(false);
+            callback && callback(null, false);
         }, 30);
         return false;
     }
@@ -117,7 +118,7 @@ GoogleAnalystic.prototype.init = function (callback) {
     jsSrc += this.trackingId;
     this.includeJS(jsSrc, function () {
         Me.inited = true;
-        callback && callback(true);
+        callback && callback(null, true);
     });
     window['dataLayer'] = window['dataLayer'] || [];
     window['gtag'] = function () {
@@ -237,7 +238,7 @@ for (var p in GoogleAnalystic.prototype) {
 GoogleMeasurement.prototype.init = function (callback) {
     if (this.disabled) {
         setTimeout(function() {
-            callback && callback(false);
+            callback && callback(null, false);
         }, 30);
         return false;
     }
@@ -254,7 +255,7 @@ GoogleMeasurement.prototype.init = function (callback) {
         }
     }
     setTimeout(function() {
-        callback && callback(false);
+        callback && callback(null, false);
     }, 30);
 };
 GoogleMeasurement.prototype.emit = function (eventName, eventInfo) {
@@ -380,5 +381,4 @@ GoogleMeasurement.prototype.exception = function (message, fatal) {
 };
 module.exports = GoogleMeasurement;
 
-},{"./GoogleAnalystic.js":4}]},{},[1])(1)
-});
+},{"./GoogleAnalystic.js":4}]},{},[1]);
