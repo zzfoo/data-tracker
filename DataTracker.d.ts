@@ -75,5 +75,49 @@ declare namespace DataTracker {
         pageview(): void;
         exception(message: any, fatal: any): void;
     }
+
+    export class Ald implements Tracker {
+        trackingId: any;
+        configData: any;
+        inited: boolean;
+        disabled: boolean;
+        constructor(configData?: {
+            platform: any
+        });
+        init(callback: any): false | undefined;
+        emit(eventName: any, eventInfo?: any): any;
+        pageview(): void;
+        login(channel: any): void;
+        signUp(channel: any): void;
+        exception(message: any, fatal: any): void;
+        adLoaded(): void;
+        adError(): void;
+        adPlay(): void;
+        adSkipped(): void;
+        adComplete(): void;
+        adClicked(): void;
+    }
+
+    export class Toutiao implements Tracker {
+        trackingId: any;
+        configData: any;
+        inited: boolean;
+        disabled: boolean;
+        constructor(configData?: {
+            platform: any
+        });
+        init(callback: any): false | undefined;
+        emit(eventName: any, eventInfo?: any): any;
+        pageview(): void;
+        login(channel: any): void;
+        signUp(channel: any): void;
+        exception(message: any, fatal: any): void;
+        adLoaded(): void;
+        adError(): void;
+        adPlay(): void;
+        adSkipped(): void;
+        adComplete(): void;
+        adClicked(): void;
+    }
 }
 
